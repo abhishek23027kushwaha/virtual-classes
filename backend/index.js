@@ -8,10 +8,10 @@ import userRouter from "./routers/user.route.js";
 import courseRouter from "./routers/course.route.js";
 import OrderRoutes from "./routers/Order.route.js";
 import reviewRouter from "./routers/review.route.js";
-
-
+import path from "path"
 dotenv.config({});
 const app = express();
+const _dirname = path.resolve();
 
 connectDB();
 // ================= MIDDLEWARE =================
@@ -39,8 +39,14 @@ app.use("/api/payment",OrderRoutes)
 app.use("/api/review",reviewRouter)
 
 
+// frontend
+app.use(express.static(path.join(_dirname, "frontend/dist")));
 
-
+app.use((req, res) => {
+  res.sendFile(
+    path.resolve(_dirname, "frontend", "dist", "index.html")
+  );
+});
 // ================= SERVER =================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
