@@ -1,1 +1,1 @@
-export const serverUrl = "http://localhost:8080"
+export const serverUrl = "https://virtual-classes-4.onrender.com"
