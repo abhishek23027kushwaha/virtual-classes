@@ -1,1 +1,1 @@
-export const serverUrl = "https://virtual-classes-4.onrender.com"
+export const serverUrl = "https://virtual-classes-6.onrender.com"
