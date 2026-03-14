@@ -22,13 +22,17 @@ const useGetCreatorCourseData = () => {
 
       } catch (error) {
         console.log(error)
-        toast.error(
-          error?.response?.data?.message || "Something went wrong"
-        )
+        // Only toast if it's not a token issue (which might happen on login transition)
+        // or if the user actually expects to be logged in and see their courses.
+        if (error?.response?.status !== 400 && error?.response?.status !== 401) {
+          toast.error(
+            error?.response?.data?.message || "Something went wrong"
+          )
+        }
       }
     }
 
-    if (userData) {
+    if (userData && userData.role === 'educator') {
       getCreatorData()
     }
   }, [userData, dispatch])
