@@ -20,6 +20,7 @@ export const signUp=async (req,res)=>{
             return res.status(400).json({message:"Please enter a Strong Password"})
         }
         
+        
         let hashPassword = await bcrypt.hash(password,10)
         let user = await User.create({
             name ,
@@ -31,8 +32,8 @@ export const signUp=async (req,res)=>{
         let token = await genToken(user._id)
         res.cookie("token",token,{
             httpOnly:true,
-            secure:true,
-            sameSite: "none",
+            secure: false, // set to true in production with https
+            sameSite: "lax", 
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         return res.status(201).json(user)
@@ -57,8 +58,8 @@ export const login=async(req,res)=>{
         let token =await genToken(user._id)
         res.cookie("token",token,{
             httpOnly:true,
-            secure:true,
-            sameSite: "none",
+            secure: false, // set to true in production with https
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         return res.status(200).json(user)
@@ -143,28 +144,34 @@ export const resetPassword = async (req,res) => {
     }
 }
 
-export const googleSignup = async (req,res) => {
+export const googleSignup = async (req, res) => {
     try {
-        const {name , email , role} = req.body
-        let user= await User.findOne({email})
-        if(!user){
+        const { name, email, role, photoUrl } = req.body
+        let user = await User.findOne({ email })
+        
+        if (!user) {
+            if (!role) {
+                return res.status(400).json({ message: "Role is required for first-time sign up" })
+            }
             user = await User.create({
-            name , email ,role
-        })
+                name, 
+                email, 
+                role,
+                photoUrl: photoUrl || ""
+            })
         }
-        let token =await genToken(user._id)
-        res.cookie("token",token,{
-            httpOnly:true,
-            secure:true,
-            sameSite: "none",
+        
+        let token = await genToken(user._id)
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false, // set to true in production with https
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         return res.status(200).json(user)
 
-
     } catch (error) {
         console.log(error)
-         return res.status(500).json({message:`googleSignup  ${error}`})
+        return res.status(500).json({ message: `Google Sign-In Error: ${error.message}` })
     }
-    
 }

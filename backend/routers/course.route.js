@@ -21,7 +21,4 @@ courseRouter.get("/creator/:courseId",isAuth,getSingleCourse)
 
 
 courseRouter.post("/search",searchWithAi)
-
-
-
 export default courseRouter

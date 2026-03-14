@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin:"https://virtual-classes-5.onrender.com", // frontend URL
+    origin:["https://virtual-classes-5.onrender.com", "http://localhost:5173", "http://localhost:3000"], // allow local dev
     credentials: true,
   })
 );

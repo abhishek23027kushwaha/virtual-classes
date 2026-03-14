@@ -28,6 +28,8 @@ import getCurrentUser from "./customhooks/getCurrentUser.jsx"
 import getCreatorCourseData from "./customhooks/getCreatorCourseData .jsx";
 import useGetCourseData from "./customhooks/useGetCourseData.jsx";
 
+export const serverUrl = "http://localhost:8080"
+
 const App = () => {
   const { userData } = useSelector((state) => state.user);
 
