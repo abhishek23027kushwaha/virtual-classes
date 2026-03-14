@@ -28,7 +28,9 @@ import getCurrentUser from "./customhooks/getCurrentUser.jsx"
 import getCreatorCourseData from "./customhooks/getCreatorCourseData .jsx";
 import useGetCourseData from "./customhooks/useGetCourseData.jsx";
 
-export const serverUrl = "http://localhost:8080"
+export const serverUrl = import.meta.env.MODE === "development" 
+  ? "http://localhost:8080" 
+  : "https://virtual-classes-6.onrender.com"; 
 
 const App = () => {
   const { userData } = useSelector((state) => state.user);
