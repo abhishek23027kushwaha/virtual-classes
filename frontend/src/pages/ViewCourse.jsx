@@ -150,19 +150,25 @@ function ViewCourse() {
 
   /* ---------------- UI ---------------- */
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-10">
+      <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden p-4 md:p-8 space-y-8">
         {/* HEADER */}
         <div className="flex flex-col md:flex-row gap-6">
-          <div className="md:w-1/2">
-            <FaArrowLeftLong
-              className="cursor-pointer mb-2"
+          <div className="w-full md:w-1/2">
+            <button 
               onClick={() => navigate("/")}
-            />
-            <img
-              src={selectedCourseData?.thumbnail || img}
-              className="rounded-xl w-full"
-            />
+              className="flex items-center gap-2 mb-4 text-gray-600 hover:text-black transition-colors"
+            >
+              <FaArrowLeftLong />
+              <span className="text-sm font-medium">Back to Courses</span>
+            </button>
+            <div className="aspect-video rounded-2xl overflow-hidden shadow-md">
+              <img
+                src={selectedCourseData?.thumbnail || img}
+                className="w-full h-full object-cover"
+                alt={selectedCourseData?.title}
+              />
+            </div>
           </div>
 
           <div className="flex-1 space-y-2">
@@ -194,27 +200,50 @@ function ViewCourse() {
         </div>
 
         {/* CURRICULUM */}
-        <div className="flex gap-6">
-          <div className="w-2/5 border p-4 rounded">
-            {selectedCourseData?.lectures?.map((lec, i) => (
-              <button
-                key={i}
-                disabled={!lec.isPreviewFree}
-                onClick={() => lec.isPreviewFree && setSelectedLecture(lec)}
-                className="flex gap-2 w-full p-2 border rounded mb-2"
-              >
-                {lec.isPreviewFree ? <FaPlayCircle /> : <FaLock />}
-                {lec.lectureTitle}
-              </button>
-            ))}
-          </div>
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">Course Content</h2>
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="w-full lg:w-2/5 border rounded-xl p-4 bg-gray-50 overflow-y-auto max-h-[400px]">
+              {selectedCourseData?.lectures?.map((lec, i) => (
+                <button
+                  key={i}
+                  disabled={!lec.isPreviewFree}
+                  onClick={() => lec.isPreviewFree && setSelectedLecture(lec)}
+                  className={`flex items-center gap-3 w-full p-4 border rounded-xl mb-3 transition-all ${
+                    selectedLecture?._id === lec._id 
+                      ? "bg-black text-white border-black" 
+                      : lec.isPreviewFree 
+                        ? "bg-white hover:border-black" 
+                        : "bg-gray-100 opacity-60 cursor-not-allowed"
+                  }`}
+                >
+                  <div className="flex-shrink-0">
+                    {lec.isPreviewFree ? <FaPlayCircle className="text-xl" /> : <FaLock />}
+                  </div>
+                  <span className="text-left font-medium line-clamp-1">{lec.lectureTitle}</span>
+                  {lec.isPreviewFree && !selectedLecture && (
+                    <span className="ml-auto text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">Free</span>
+                  )}
+                </button>
+              ))}
+            </div>
 
-          <div className="w-3/5 border p-4 rounded">
-            {selectedLecture?.videoUrl ? (
-              <video src={selectedLecture.videoUrl} controls />
-            ) : (
-              <p>Select free preview</p>
-            )}
+            <div className="w-full lg:w-3/5">
+              <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-xl flex items-center justify-center text-white border-4 border-gray-100">
+                {selectedLecture?.videoUrl ? (
+                  <video 
+                    src={selectedLecture.videoUrl} 
+                    controls 
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="text-center p-6">
+                    <FaPlayCircle className="text-5xl mb-4 mx-auto opacity-20" />
+                    <p className="text-gray-400">Select a free preview lecture to start watching</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

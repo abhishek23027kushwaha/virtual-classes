@@ -8,16 +8,26 @@ function EnrolledCourse() {
   const { userData } = useSelector((state) => state.user);
      console.log(userData);
   return (
-    <div className="min-h-screen w-full px-4 py-9 bg-gray-50">
-      <FaArrowLeftLong  className='absolute top-[3%] md:top-[6%] left-[5%] w-[22px] h-[22px] cursor-pointer' onClick={()=>navigate("/")}/>
-      <h1 className="text-3xl text-center font-bold text-gray-800 mb-6  ">
-        My Enrolled Courses
-      </h1>
+    <div className="min-h-screen w-full p-4 md:p-10 bg-gray-50">
+      <div className="max-w-6xl mx-auto space-y-8">
+        <button 
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors"
+        >
+          <FaArrowLeftLong />
+          <span className="text-sm font-medium">Back to Courses</span>
+        </button>
+
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+          My Enrolled Courses
+        </h1>
 
       {userData?.enrolledCourses.length === 0 ? (
-        <p className="text-gray-500 text-center w-full">You haven’t enrolled in any course yet.</p>
+        <p className="text-gray-500 text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-200">
+          You haven’t enrolled in any course yet.
+        </p>
       ) : (
-        <div className="flex items-center justify-center flex-wrap gap-[30px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {userData?.enrolledCourses?.map((course) => (
             <div
               key={course._id}
@@ -38,6 +48,7 @@ function EnrolledCourse() {
           ))}
         </div>
       )}
+      </div>
     </div>
   )
 }

@@ -18,48 +18,64 @@ function ViewLecture() {
   
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex flex-col md:flex-row gap-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8 flex flex-col lg:flex-row gap-8">
      
-      {/* Left - Video & Course Info */}
-      <div className="w-full md:w-2/3 bg-white rounded-2xl shadow-md p-6 border border-gray-200">
+      <div className="w-full lg:w-3/4 bg-white rounded-3xl shadow-xl overflow-hidden p-0 border border-gray-100">
+        {/* Course Details Header */}
+        <div className="p-6 md:p-8 bg-white border-b border-gray-100">
         {/* Course Details */}
-        <div className="mb-6" >
-           
-          <h1 className="text-2xl font-bold flex items-center justify-start gap-[20px]  text-gray-800"><FaArrowLeftLong  className=' text-black w-[22px] h-[22px] cursor-pointer' onClick={()=>navigate("/")}/>{selectedCourse?.title}</h1>
+            <button 
+              onClick={() => navigate("/")}
+              className="flex items-center gap-2 mb-4 text-gray-500 hover:text-black transition-colors"
+            >
+              <FaArrowLeftLong />
+              <span className="text-sm font-medium">Back</span>
+            </button>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
+              {selectedCourse?.title}
+            </h1>
           
-          <div className="mt-2 flex gap-4 text-sm text-gray-500 font-medium">
-            <span>Category: {selectedCourse?.category}</span>
-            <span>Level: {selectedCourse?.level}</span>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold uppercase tracking-wider">
+              {selectedCourse?.category}
+            </span>
+            <span className="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-semibold uppercase tracking-wider">
+              {selectedCourse?.level}
+            </span>
           </div>
         </div>
 
-        {/* Video Player */}
-        <div className="aspect-video bg-black rounded-xl overflow-hidden mb-4 border border-gray-300">
-          {selectedLecture?.videoUrl ? (
-            <video
-              src={selectedLecture.videoUrl}
-              controls
-              className="w-full h-full object-cover"
-              crossOrigin="anonymous"
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full text-white">
-              Select a lecture to start watching
-            </div>
-          )}
-        </div>
+        {/* Video Player Container */}
+        <div className="p-4 md:p-8">
+          <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-50">
+            {selectedLecture?.videoUrl ? (
+              <video
+                src={selectedLecture.videoUrl}
+                controls
+                className="w-full h-full object-contain"
+                crossOrigin="anonymous"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-white opacity-40">
+                <FaPlayCircle size={64} className="mb-4" />
+                <p className="font-medium">Select a lecture to start watching</p>
+              </div>
+            )}
+          </div>
 
-        {/* Selected Lecture Info */}
-        <div className="mt-2">
-          <h2 className="text-lg font-semibold text-gray-800">{selectedLecture?.lectureTitle}</h2>
-          
+          <div className="mt-6">
+            <h2 className="text-xl font-bold text-gray-900">{selectedLecture?.lectureTitle}</h2>
+          </div>
         </div>
       </div>
 
       {/* Right - All Lectures + Creator Info */}
-      <div className="w-full md:w-1/3 bg-white rounded-2xl shadow-md p-6 border border-gray-200 h-fit">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">All Lectures</h2>
-        <div className="flex flex-col gap-3 mb-6">
+      <div className="w-full lg:w-1/4 flex flex-col gap-6">
+        <div className="bg-white rounded-3xl shadow-lg p-6 border border-gray-100 h-fit max-h-[calc(100vh-8rem)] flex flex-col">
+          <h2 className="text-xl font-bold mb-6 text-gray-900 flex items-center gap-2">
+            Course Content
+          </h2>
+          <div className="flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
           {selectedCourse?.lectures?.length > 0 ? (
             selectedCourse.lectures.map((lecture, index) => (
               <button
@@ -104,6 +120,7 @@ function ViewLecture() {
         )}
       </div>
     </div>
+  </div>
   );
 }
 
