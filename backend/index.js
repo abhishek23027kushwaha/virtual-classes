@@ -14,6 +14,10 @@ const app = express();
 // const _dirname = path.resolve();
 connectDB();
 // ================= MIDDLEWARE =================
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -69,9 +73,13 @@ app.use("/api/review",reviewRouter)
 //   );
 // });
 // ================= SERVER =================
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 8000;
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+export default app;
 
 

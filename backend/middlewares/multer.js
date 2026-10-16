@@ -1,8 +1,9 @@
 import multer from "multer";
 import fs from "fs";
 import path from "path";
+import os from "os";
 
-const uploadDir = path.resolve("public");
+const uploadDir = process.env.VERCEL ? path.join(os.tmpdir(), "uploads") : path.resolve("public");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
