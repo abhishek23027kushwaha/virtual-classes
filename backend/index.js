@@ -17,16 +17,31 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.FRONTEND_URL,
+  "https://virtual-classes-6.onrender.com",
+  "https://virtual-classes-5.onrender.com",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173"
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      "https://virtual-classes-6.onrender.com",
-      "https://virtual-classes-5.onrender.com",
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:3000",
-      "http://127.0.0.1:5173"
-    ],
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        origin.endsWith(".netlify.app") ||
+        origin.endsWith(".onrender.com")
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
