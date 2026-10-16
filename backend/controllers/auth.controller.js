@@ -9,6 +9,10 @@ export const signUp=async (req,res)=>{
     try {
 
         let {name,email,password,role}= req.body
+        if(!name || !email || !password){
+            return res.status(400).json({message:"Please fill all fields"})
+        }
+        role = role || "student";
         let existUser= await User.findOne({email})
         if(existUser){
             return res.status(400).json({message:"email already exist"})
